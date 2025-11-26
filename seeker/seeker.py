@@ -24,6 +24,7 @@ if __name__ == '__main__':
     parser.add_argument('--threshold_1', type=float, default=0.5)
     parser.add_argument('--threshold_2', type=float, default=0.0)
     parser.add_argument('--min_length', type=int, default=100)
+    parser.add_argument('--max_length', type=int, default=400)
     parser.add_argument('--model', type=str, default='llama')
     parser.add_argument('--key', type=int, default=0)
     parser.add_argument('--seed', type=int, default=0)
@@ -33,7 +34,19 @@ if __name__ == '__main__':
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Load model and tokenizer
-    if args.model == 'llama':
+    if args.model == 'opt':  
+        model_name = 'facebook/opt-125m'
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+        transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained(model_name, device_map=device),
+                                            tokenizer=tokenizer,
+                                            vocab_size=32000,
+                                            device=device,
+                                            max_new_tokens=args.max_length,
+                                            min_length=args.max_length + 30,
+                                            no_repeat_ngram_size=4,
+                                            do_sample=True)
+    elif args.model == 'llama':
         model_name = 'meta-llama/Llama-2-7b-hf'
         tokenizer = LlamaTokenizer.from_pretrained(model_name)
 
