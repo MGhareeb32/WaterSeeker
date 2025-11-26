@@ -23,6 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--window_size', type=int, default=50)
     parser.add_argument('--threshold_1', type=float, default=0.5)
     parser.add_argument('--threshold_2', type=float, default=0.0)
+    parser.add_argument('--tolerance', type=int, default=100)
     parser.add_argument('--min_length', type=int, default=100)
     parser.add_argument('--max_length', type=int, default=400)
     parser.add_argument('--model', type=str, default='llama')
@@ -93,7 +94,7 @@ if __name__ == '__main__':
                                                                    threshold_2=args.threshold_2,
                                                                    top_k=20,
                                                                    min_length=args.min_length,
-                                                                   tolerance=100)
+                                                                   tolerance=args.tolerance)
             is_watermarked = detect_result['is_watermarked']
             indices = detect_result['indices']
 

@@ -75,7 +75,7 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
 
         # random sample watermark strength
         if args.watermark == 'kgw':
-            watermark.config.delta = random.choice([2.5])
+            watermark.config.delta = random.choice([5.5])
         elif args.watermark == 'aar':
             watermark.config.temperature = random.choice([0.5, 0.4, 0.3])
         
