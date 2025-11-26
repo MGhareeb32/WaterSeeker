@@ -15,9 +15,10 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
     device = f"cuda:{rank}"
     
     if args.model == 'llama':
-        tokenizer = LlamaTokenizer.from_pretrained('/workspace/intern_ckpt/panleyi/Llama-2-7b-hf')
+        model_name = 'meta-llama/Llama-2-7b-hf'
+        tokenizer = LlamaTokenizer.from_pretrained(model_name)
 
-        transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained('/workspace/intern_ckpt/panleyi/Llama-2-7b-hf', device_map=device),
+        transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained(model_name, device_map=device),
                                             tokenizer=tokenizer,
                                             vocab_size=32000,
                                             device=device,
@@ -62,7 +63,7 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
 
         # random sample watermark strength
         if args.watermark == 'kgw':
-            watermark.config.delta = random.choice([2.0, 1.5, 1.0])
+            watermark.config.delta = random.choice([2.5])
         elif args.watermark == 'aar':
             watermark.config.temperature = random.choice([0.5, 0.4, 0.3])
         

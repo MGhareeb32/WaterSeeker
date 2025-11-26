@@ -34,9 +34,10 @@ if __name__ == '__main__':
 
     # Load model and tokenizer
     if args.model == 'llama':
-        tokenizer = LlamaTokenizer.from_pretrained('/workspace/intern_ckpt/panleyi/Llama-2-7b-hf')
+        model_name = 'meta-llama/Llama-2-7b-hf'
+        tokenizer = LlamaTokenizer.from_pretrained(model_name)
 
-        transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained('/workspace/intern_ckpt/panleyi/Llama-2-7b-hf', device_map='auto'),
+        transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained(model_name, device_map='auto'),
                                             tokenizer=tokenizer,
                                             vocab_size=32000,
                                             device=device,

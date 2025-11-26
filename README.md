@@ -11,11 +11,13 @@ In this repository, we provide `generate_data.py` to assist users in constructin
 You can simply run the following command:
 
 ```shell
-python -u generate_data.py --num_sample 300 \
+python -u generate_data.py --num_sample 100 \
     --wiki_start_index 0 \
     --prompt_start_index 0 \
     --watermark kgw \
     --key 33554393 \
+    --min_length 100\
+    --max_length 400\
     --model llama \
     --output_file data/main/kgw_llama.json
 ```
