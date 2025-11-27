@@ -15,7 +15,7 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
     device = f"cuda:{rank}"
     
     if args.model == 'opt':  
-        model_name = 'facebook/opt-125m'
+        model_name = 'facebook/opt-1.3b'
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
         transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained(model_name, device_map=device),
@@ -104,6 +104,7 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
         
             segment_info = [(insert_position, insert_position+random_length)]
             data[idx].append({
+                'token_count': tokens.size(),
                 'text': text, 
                 'flag': 1, 
                 'segments': segment_info,

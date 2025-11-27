@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     # Load model and tokenizer
     if args.model == 'opt':  
-        model_name = 'facebook/opt-125m'
+        model_name = 'facebook/opt-1.3b'
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
         transformers_config = TransformersConfig(model=AutoModelForCausalLM.from_pretrained(model_name, device_map=device),
