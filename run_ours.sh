@@ -1,125 +1,10 @@
-N_SAMPLE=100
-N_EDIT=6
-N_WINDOW=6
-TOLERANCE=6
+N_SAMPLE=5
+N_EDIT=$1
+N_WINDOW=100
+TOLERANCE=100
 KEY=33554393
-
-# DELTA = 5.5
-
-# N_SAMPLE=100
-# N_EDIT=1
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=2
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=3
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=4
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=5
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=6
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=25
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 0.36, 'F1': 0.7804878048780487, 'Average iou': 0.5694360530407824}
-# (0.0019839678425341845, 0.36076924204826355)
-
-
+echo $@
 # DELTA = 2.5
-
-# N_SAMPLE=100
-# N_EDIT=1
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=2
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=3
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=4
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=5
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=6
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 1.0, 'F1': 0.0, 'Average iou': 0.0}
-# (0.0, 1.0)
-
-# N_SAMPLE=100
-# N_EDIT=25
-# N_WINDOW=25
-# TOLERANCE=10
-# KEY=33554393
-# {'FPR': 0.0, 'FNR': 0.9, 'F1': 0.18181818181818182, 'Average iou': 0.07749936854677217}
-# (0.00090180360712111, 0.8999999761581421)
 
 
 python -u generate_data.py --num_sample $N_SAMPLE \
@@ -133,7 +18,7 @@ python -u generate_data.py --num_sample $N_SAMPLE \
     --output_file data/main/kgw_opt.json
 
 python -m seeker.seeker --watermark kgw \
-    --targeted_fpr 0.1 \
+    --targeted_fpr 0.5 \
     --input_file data/main/kgw_opt_500.json \
     --output_file baseline_result/seeker_main/kgw_opt.log \
     --window_size $N_WINDOW \

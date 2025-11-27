@@ -22,8 +22,8 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
                                             tokenizer=tokenizer,
                                             vocab_size=32000,
                                             device=device,
-                                            max_new_tokens=args.max_length,
-                                            min_length=args.max_length + 30,
+                                            max_new_tokens=500,
+                                            min_length=500,
                                             no_repeat_ngram_size=4,
                                             do_sample=True)
     elif args.model == 'llama':
@@ -34,8 +34,8 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
                                             tokenizer=tokenizer,
                                             vocab_size=32000,
                                             device=device,
-                                            max_new_tokens=args.max_length,
-                                            min_length=args.max_length + 30,
+                                            max_new_tokens=500,
+                                            min_length=500,
                                             no_repeat_ngram_size=4,
                                             do_sample=True)
 
@@ -46,8 +46,8 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
                                                 tokenizer=tokenizer,
                                                 vocab_size=32000,
                                                 device=device,
-                                                max_new_tokens=args.max_length,
-                                                min_length=args.max_length + 30,
+                                                max_new_tokens=500,
+                                                min_length=500,
                                                 no_repeat_ngram_size=4,
                                                 do_sample=True)
 
@@ -88,21 +88,17 @@ def generate_data_for_gpu(rank, args, start_idx, end_idx, wiki_lengths):
         prompt_tokens = tokenizer.encode(prompt, return_tensors='pt', 
                                        add_special_tokens=False).squeeze()
         watermarked_tokens = watermarked_tokens[len(prompt_tokens):]
-        
-        # truncate watermarked tokens to a random length
-        random_length = torch.randint(args.min_length, args.max_length + 1, (1,)).item()
-        watermarked_tokens_fragment = watermarked_tokens[:random_length]
-
+    
         # insert watermarked text into wiki text
         for idx in range(len(wiki_lengths)):
             wiki_length = wiki_lengths[idx]
             wiki_tokens = tokenizer.encode(wiki_data[i + args.wiki_start_index]['text'], 
                                     return_tensors='pt', add_special_tokens=False).squeeze()[:wiki_length]
             insert_position = torch.randint(0, len(wiki_tokens), (1,)).item()
-            tokens = torch.cat((wiki_tokens[:insert_position], watermarked_tokens_fragment, wiki_tokens[insert_position:]))
+            tokens = torch.cat((watermarked_tokens[:insert_position], wiki_tokens[:args.max_length], watermarked_tokens[insert_position:]))
             text = tokenizer.decode(tokens, skip_special_tokens=True)
         
-            segment_info = [(insert_position, insert_position+random_length)]
+            segment_info = [(insert_position, insert_position+args.max_length)]
             data[idx].append({
                 'token_count': tokens.size(),
                 'text': text, 
@@ -137,7 +133,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str, default='llama')
     args = parser.parse_args()
 
-    wiki_lengths = [500, 2000, 5000, 10000]
+    wiki_lengths = [500,]
 
     world_size = torch.cuda.device_count()
     samples_per_gpu = args.num_sample // world_size
